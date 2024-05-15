@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/src/output.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <title>Mathsem</title>
+    <style>
+      @media (max-width: 500px) {
+        .active {
+          flex-direction: column;
+          gap: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav
+      class="navbar navbar-light bg-light"
+      style="padding-left: 25px; padding-right: 25px"
+    >
+      <a class="navbar-brand" href="#">Записи</a>
+      <div class="d-flex">
+        <% if (user) { %>
+        <span class="navbar-text me-2">Привет, <%= user.username %>!</span>
+        <a class="btn btn-outline-danger" href="/logout">Выйти</a>
+        <% } else { %>
+        <div>
+          <a class="btn btn-outline-primary me-2" href="/login">Вход</a>
+          <a class="btn btn-outline-success" href="/register">Регистрация</a>
+        </div>
+        <% } %>
+      </div>
+    </nav>
+    <nav class="navbar active" style="justify-content: center">
+      <a href="https://mathsem.netlify.app" class="btn btn-outline-secondary me-2"
+        >К программе</a
+      >
+      <a
+        href="https://mathsem.netlify.app/comment"
+        class="btn btn-outline-secondary me-2"
+        >Отзывы</a
+      >
+      <a
+        href="https://mathsem.netlify.app/helping"
+        class="btn btn-outline-secondary me-2"
+        >Помощь по сайту</a
+      >
+      <a
+        href="https://mathsem.netlify.app/help_with_programm"
+        class="btn btn-outline-secondary me-2"
+        >Написать на почту</a
+      >
+      <a href="#" class="btn btn-outline-secondary me-2">Просмотреть записи</a>
+    </nav>
+    <div class="container">
+      <h2>Таблица с записями</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Имя</th>
+            <th scope="col">Имя файла</th>
+            <th scope="col">Файл</th>
+            <th scope="col">Дата поста</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% data.forEach(row => { %>
+          <tr>
+            <td><%= row.name %></td>
+            <td><%= row.name_file %></td>
+            <td><a href="/uploads/<%= row.file %>">Скачать</a></td>
+            <td><%= row.data_reg %></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <% if (user) { %>
+      <h2>Добавить запись</h2>
+      <form action="/upload" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label for="name" class="form-label">Имя</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            name="name"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="name_file" class="form-label">Название файла</label>
+          <input
+            type="text"
+            class="form-control"
+            id="NAME_FILE"
+            name="NAME_FILE"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="file" class="form-label">Файл</label>
+          <input
+            class="form-control"
+            type="file"
+            id="file"
+            name="file"
+            required
+          />
+        </div>
+        <button type="submit" class="btn mt-4 btn-outline-secondary">
+          Отправить
+        </button>
+      </form>
+      <% } else { %>
+      <p>
+        Пожалуйста, <a href="/login">войдите</a> или
+        <a href="/register">зарегистрируйтесь</a>, чтобы оставлять записи.
+      </p>
+      <% } %>
+    </div>
+  </body>
+</html>
